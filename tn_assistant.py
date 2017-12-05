@@ -38,14 +38,17 @@ logging.basicConfig(
 
 def say_ip():
     ip_address = subprocess.check_output("hostname -I | cut -d' ' -f1", shell=True)
+    print(ip_address.decode('utf-8'))
     aiy.audio.say('My IP address is %s' % ip_address.decode('utf-8'))
 
 def power_off_pi():
+    print('Good bye!')
     aiy.audio.say('Good bye!')
     subprocess.call('sudo shutdown now', shell=True)
 
 
 def reboot_pi():
+    print('See you in a bit!')
     aiy.audio.say('See you in a bit!')
     subprocess.call('sudo reboot', shell=True)
 
