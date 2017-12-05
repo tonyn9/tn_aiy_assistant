@@ -41,7 +41,7 @@ def say_ip():
     aiy.audio.say('My IP address is %s' % ip_address.decode('utf-8'))
 
 
-def process_event(event):
+def process_event(assistant, event):
     status_ui = aiy.voicehat.get_status_ui()
     if event.type == EventType.ON_START_FINISHED:
         status_ui.status('ready')
