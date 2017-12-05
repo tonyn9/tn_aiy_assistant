@@ -54,7 +54,7 @@ def process_event(assistant, event):
     elif event.type == EventType.ON_RECOGNIZING_SPEECH_FINISHED and event.args:
         print('You said:', event.args['text'])
         text = event.args['text'].lower()
-        if text == ('ip address' or "what is my ip address'):
+        if text == ('ip address' or 'what is my ip address'):
             assistant.stop_conversation()
             say_ip()
 
