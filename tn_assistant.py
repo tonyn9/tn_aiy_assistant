@@ -22,9 +22,11 @@ It is available for Raspberry Pi 2/3 only; Pi Zero is not supported.
 """
 
 import logging
+import subprocess
 import sys
 
 import aiy.assistant.auth_helpers
+import aiy.audio
 import aiy.voicehat
 from google.assistant.library import Assistant
 from google.assistant.library.event import EventType
@@ -33,6 +35,10 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
 )
+
+def say_ip():
+    ip_address = subprocess.check_output("hostname -I | cut -d' ' -f1", shell=True)
+    aiy.audio.say('My IP address is %s' % ip_address.decode('utf-8'))
 
 
 def process_event(event):
@@ -44,6 +50,13 @@ def process_event(event):
 
     elif event.type == EventType.ON_CONVERSATION_TURN_STARTED:
         status_ui.status('listening')
+
+    elif event.type == EventType.ON_RECOGNIZING_SPEECH_FINISHED and event.args:
+        print('You said:', event.args['text'])
+        text = event.args['text'].lower()
+        if text == 'ip address':
+            assistant.stop_conversation()
+            say_ip()
 
     elif event.type == EventType.ON_END_OF_UTTERANCE:
         status_ui.status('thinking')
